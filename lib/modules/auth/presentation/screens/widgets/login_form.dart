@@ -13,16 +13,14 @@ class LoginForm extends StatelessWidget {
         CustomTextField(hintText: 'Email'),
         SizedBox(height: 6),
         CustomTextField(
-          hintText: 'Password', 
+          hintText: 'Password',
           icon: Icons.visibility_off_outlined,
         ),
         SizedBox(height: 16),
         RememberMeAndForgetPasswordSection(),
         SizedBox(height: 24),
-        CustomElevatedButton(),
+        CustomElevatedButton(text: 'Log In', onPressed: () {}),
       ],
     );
   }
 }
-
-
