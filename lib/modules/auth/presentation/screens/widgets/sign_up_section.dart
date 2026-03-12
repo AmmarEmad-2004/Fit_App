@@ -18,7 +18,7 @@ class SignUpSection extends StatelessWidget {
           ),
           SizedBox(height: 12),
           Text(
-            'Enter your email and password to log in ',
+            'Enter your email and password to sign up ',
             style: TextStyle(
               color: Color(0xff6c7278),
               fontSize: 12,

@@ -23,7 +23,7 @@ class SignUpForm extends StatelessWidget {
           icon: Icons.visibility_off_outlined,
         ),
         SizedBox(height: 24),
-        CustomElevatedButton(),
+        CustomElevatedButton(text: 'Sign Up', onPressed: () {}),
         SizedBox(height: 24),
       ],
     );
