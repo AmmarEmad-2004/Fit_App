@@ -22,12 +22,10 @@ class AuthValidators {
     return null;
   }
 
-  static String? Function(String?) validateConfirmPassword(String? password) {
-    return (String? value) {
-      if (value == null || value.isEmpty) return 'Please confirm your password';
-      if (value != password) return 'Passwords do not match';
-      return null;
-    };
+  static String? validateConfirmPassword(String? password, String? confirmPassword) {
+    if (confirmPassword == null || confirmPassword.isEmpty) return 'Please confirm your password';
+    if (confirmPassword != password) return 'Passwords do not match';
+    return null;
   }
 
   // ─── Form-level helpers ────────────────────────────────────────────────────
@@ -50,6 +48,6 @@ class AuthValidators {
     return validateName(name) ??
         validateEmail(email) ??
         validatePassword(password) ??
-        validateConfirmPassword(password)(confirmPassword);
+        validateConfirmPassword(password, confirmPassword);
   }
 }
