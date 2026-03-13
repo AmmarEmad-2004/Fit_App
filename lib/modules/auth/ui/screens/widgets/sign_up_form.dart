@@ -1,31 +1,103 @@
+import 'package:fit_app/core/routing/app_routers.dart';
+import 'package:fit_app/core/utils/auth_validators.dart';
+import 'package:fit_app/core/widgets/show_snackbar.dart';
+import 'package:fit_app/modules/auth/ui/logic/sign_up_cubit/sign_up_cubit.dart';
 import 'package:fit_app/modules/auth/ui/screens/widgets/custom_elevated_button.dart';
 import 'package:fit_app/modules/auth/ui/screens/widgets/custom_text_field.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 
-class SignUpForm extends StatelessWidget {
+class SignUpForm extends StatefulWidget {
   const SignUpForm({super.key});
 
   @override
+  State<SignUpForm> createState() => _SignUpFormState();
+}
+
+class _SignUpFormState extends State<SignUpForm> {
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  String? _name, _email, _password;
+  bool _isPasswordVisible = false;
+  bool _isConfirmPasswordVisible = false;
+
+
+  @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        CustomTextField(hintText: 'Name'),
-        SizedBox(height: 6),
-        CustomTextField(hintText: 'Email'),
-        SizedBox(height: 6),
-        CustomTextField(
-          hintText: 'Password',
-          icon: Icons.visibility_off_outlined,
-        ),
-        SizedBox(height: 6),
-        CustomTextField(
-          hintText: 'Confirm Password',
-          icon: Icons.visibility_off_outlined,
-        ),
-        SizedBox(height: 24),
-        CustomElevatedButton(text: 'Sign Up', onPressed: () {}),
-        SizedBox(height: 24),
-      ],
+    return BlocConsumer<SignUpCubit, SignUpState>(
+      listener: (context, state) {
+        if (state is SignUpSuccess) {
+          ShowSnackBar.show(
+            context,
+            'Account created successfully!',
+            backgroundColor: Colors.green,
+          );
+          GoRouter.of(context).push(AppRouters.home);
+        } else if (state is SignUpFailure) {
+          ShowSnackBar.show(context, state.errorMessage);
+        }
+      },
+      builder: (context, state) {
+        return Form(
+          key: _formKey,
+          autovalidateMode: AutovalidateMode.onUserInteraction,
+          child: Column(
+            children: [
+              CustomTextField(
+                hintText: 'Name',
+                validator: AuthValidators.validateName,
+                onChanged: (value) => _name = value,
+              ),
+              const SizedBox(height: 6),
+              CustomTextField(
+                hintText: 'Email',
+                validator: AuthValidators.validateEmail,
+                onChanged: (value) => _email = value,
+              ),
+              const SizedBox(height: 6),
+              CustomTextField(
+                hintText: 'Password',
+                icon: _isPasswordVisible
+                    ? Icons.visibility
+                    : Icons.visibility_off_outlined,
+                obscureText: !_isPasswordVisible,
+                onPressed: () =>
+                    setState(() => _isPasswordVisible = !_isPasswordVisible),
+                validator: AuthValidators.validatePassword,
+                onChanged: (value) => _password = value,
+              ),
+              const SizedBox(height: 6),
+              CustomTextField(
+                hintText: 'Confirm Password',
+                icon: _isConfirmPasswordVisible
+                    ? Icons.visibility
+                    : Icons.visibility_off_outlined,
+                obscureText: !_isConfirmPasswordVisible,
+                onPressed: () => setState(
+                  () => _isConfirmPasswordVisible = !_isConfirmPasswordVisible,
+                ),
+                validator: (value) => AuthValidators.validateConfirmPassword(_password, value),
+                onChanged: (value) {},
+              ),
+              const SizedBox(height: 24),
+              state is SignUpLoading
+                  ? const CircularProgressIndicator()
+                  : CustomElevatedButton(
+                      text: 'Sign Up',
+                      onPressed: () {
+                        if (!_formKey.currentState!.validate()) return;
+                        context.read<SignUpCubit>().signUp(
+                          name: _name!.trim(),
+                          email: _email!.trim(),
+                          password: _password!.trim(),
+                        );
+                      },
+                    ),
+              const SizedBox(height: 24),
+            ],
+          ),
+        );
+      },
     );
   }
 }
