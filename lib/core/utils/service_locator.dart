@@ -7,11 +7,13 @@ import 'package:get_it/get_it.dart';
 
 var getIt = GetIt.instance;
 
-void setUPGetIt(){
+void setUPGetIt() {
   getIt.registerLazySingleton<FirebaseAuthService>(() => FirebaseAuthService());
-  getIt.registerLazySingleton<AuthRepo>(()=>FirebaseAuthRepoImple(firebaseAuthService: getIt<FirebaseAuthService>()) );
+  getIt.registerLazySingleton<AuthRepo>(() =>
+      FirebaseAuthRepoImple(firebaseAuthService: getIt<FirebaseAuthService>()));
 
-  getIt.registerFactory<SignInCubit>(()=>SignInCubit(authRepo: getIt<AuthRepo>()));
-  getIt.registerFactory<SignUpCubit>(()=>SignUpCubit(authRepo: getIt<AuthRepo>()));
-
+  getIt.registerFactory<SignInCubit>(
+      () => SignInCubit(authRepo: getIt<AuthRepo>()));
+  getIt.registerFactory<SignUpCubit>(
+      () => SignUpCubit(authRepo: getIt<AuthRepo>()));
 }
