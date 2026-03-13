@@ -20,6 +20,7 @@ class _LoginFormState extends State<LoginForm> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   String? _email, _password;
   bool _isPasswordVisible = false;
+  AutovalidateMode _autovalidate = AutovalidateMode.disabled;
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +40,7 @@ class _LoginFormState extends State<LoginForm> {
       builder: (context, state) {
         return Form(
           key: _formKey,
-          autovalidateMode: AutovalidateMode.onUserInteraction,
+          autovalidateMode: _autovalidate,
           child: Column(
             children: [
               CustomTextField(
@@ -67,11 +68,13 @@ class _LoginFormState extends State<LoginForm> {
                   : CustomElevatedButton(
                       text: 'Log In',
                       onPressed: () {
+                        setState(() => _autovalidate = AutovalidateMode.onUserInteraction);
                         if (!_formKey.currentState!.validate()) return;
                         context.read<SignInCubit>().signIn(
                           email: _email!.trim(),
                           password: _password!.trim(),
                         );
+                        setState(() => _autovalidate = AutovalidateMode.disabled);
                       },
                     ),
             ],
