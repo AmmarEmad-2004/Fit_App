@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fit_app/modules/auth/data/models/user_model.dart';
 
-class FirebaseService {
+class FirebaseAuthService {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
 
   Future<UserModel> signInWithEmailAndPassword({
