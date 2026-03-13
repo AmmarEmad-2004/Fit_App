@@ -1,3 +1,5 @@
+import 'package:dartz/dartz.dart';
+import 'package:fit_app/core/errors/auth_failuer.dart';
 import 'package:fit_app/modules/auth/data/models/user_model.dart';
 import 'package:fit_app/modules/auth/data/repos/auth_repo.dart';
 import 'package:fit_app/modules/auth/data/services/firebase_auth_service.dart';
@@ -7,16 +9,19 @@ class FirebaseAuthRepoImple implements AuthRepo {
 
   FirebaseAuthRepoImple({required this.firebaseAuthService});
   @override
-  Future<UserModel> signIn({required String email, required String password}) async{
+  Future<Either<AuthFailure, UserModel>> signIn({
+    required String email,
+    required String password,
+  }) async {
     final user = await firebaseAuthService.signInWithEmailAndPassword(
       email: email,
       password: password,
     );
-    return user;
+    return right(user);
   }
 
   @override
-  Future<UserModel> signUp({
+  Future<Either<AuthFailure, UserModel>> signUp({  
     required String name,
     required String email,
     required String password,
@@ -26,6 +31,6 @@ class FirebaseAuthRepoImple implements AuthRepo {
       email: email,
       password: password,
     );
-    return user;
+    return right(user);
   }
 }
