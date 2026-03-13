@@ -15,9 +15,11 @@ class LoginScreenBody extends StatelessWidget {
         ),
       ),
       child: Center(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
-          child: CustomloginCard(),
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: CustomloginCard(),
+          ),
         ),
       ),
     );
