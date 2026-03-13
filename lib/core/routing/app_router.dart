@@ -1,6 +1,6 @@
 import 'package:fit_app/core/routing/app_routers.dart';
-import 'package:fit_app/modules/auth/presentation/screens/login_screen.dart';
-import 'package:fit_app/modules/auth/presentation/screens/sign_up_screen.dart';
+import 'package:fit_app/modules/auth/ui/screens/login_screen.dart';
+import 'package:fit_app/modules/auth/ui/screens/sign_up_screen.dart';
 import 'package:fit_app/modules/splash/screens/splash_screen.dart';
 import 'package:go_router/go_router.dart';
 
