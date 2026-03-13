@@ -44,12 +44,14 @@ class _LoginFormState extends State<LoginForm> {
           child: Column(
             children: [
               CustomTextField(
+                key: const Key('login_email'),
                 hintText: 'Email',
                 validator: AuthValidators.validateEmail,
                 onChanged: (value) => _email = value,
               ),
               const SizedBox(height: 6),
               CustomTextField(
+                key: const Key('login_password'),
                 hintText: 'Password',
                 icon: _isPasswordVisible
                     ? Icons.visibility
@@ -66,6 +68,7 @@ class _LoginFormState extends State<LoginForm> {
               state is SignInLoading
                   ? const CircularProgressIndicator()
                   : CustomElevatedButton(
+                      key: const Key('login_button'),
                       text: 'Log In',
                       onPressed: () {
                         setState(() => _autovalidate = AutovalidateMode.onUserInteraction);
