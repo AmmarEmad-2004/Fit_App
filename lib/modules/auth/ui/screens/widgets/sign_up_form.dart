@@ -20,7 +20,7 @@ class _SignUpFormState extends State<SignUpForm> {
   String? _name, _email, _password;
   bool _isPasswordVisible = false;
   bool _isConfirmPasswordVisible = false;
-
+  AutovalidateMode _autovalidate = AutovalidateMode.disabled;
 
   @override
   Widget build(BuildContext context) {
@@ -40,22 +40,25 @@ class _SignUpFormState extends State<SignUpForm> {
       builder: (context, state) {
         return Form(
           key: _formKey,
-          autovalidateMode: AutovalidateMode.onUserInteraction,
+          autovalidateMode: _autovalidate,
           child: Column(
             children: [
               CustomTextField(
+                key: const Key('sign_up_name'),
                 hintText: 'Name',
                 validator: AuthValidators.validateName,
                 onChanged: (value) => _name = value,
               ),
               const SizedBox(height: 6),
               CustomTextField(
+                key: const Key('sign_up_email'),
                 hintText: 'Email',
                 validator: AuthValidators.validateEmail,
                 onChanged: (value) => _email = value,
               ),
               const SizedBox(height: 6),
               CustomTextField(
+                key: const Key('sign_up_password'),
                 hintText: 'Password',
                 icon: _isPasswordVisible
                     ? Icons.visibility
@@ -68,6 +71,7 @@ class _SignUpFormState extends State<SignUpForm> {
               ),
               const SizedBox(height: 6),
               CustomTextField(
+                key: const Key('sign_up_confirm_password'),
                 hintText: 'Confirm Password',
                 icon: _isConfirmPasswordVisible
                     ? Icons.visibility
@@ -76,20 +80,29 @@ class _SignUpFormState extends State<SignUpForm> {
                 onPressed: () => setState(
                   () => _isConfirmPasswordVisible = !_isConfirmPasswordVisible,
                 ),
-                validator: (value) => AuthValidators.validateConfirmPassword(_password, value),
+                validator: (value) =>
+                    AuthValidators.validateConfirmPassword(_password, value),
                 onChanged: (value) {},
               ),
               const SizedBox(height: 24),
               state is SignUpLoading
                   ? const CircularProgressIndicator()
                   : CustomElevatedButton(
+                      key: const Key('sign_up_button'),
                       text: 'Sign Up',
                       onPressed: () {
+                        setState(
+                          () => _autovalidate =
+                              AutovalidateMode.onUserInteraction,
+                        );
                         if (!_formKey.currentState!.validate()) return;
                         context.read<SignUpCubit>().signUp(
                           name: _name!.trim(),
                           email: _email!.trim(),
                           password: _password!.trim(),
+                        );
+                        setState(
+                          () => _autovalidate = AutovalidateMode.disabled,
                         );
                       },
                     ),
