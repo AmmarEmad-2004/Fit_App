@@ -1,7 +1,9 @@
+import 'package:fit_app/core/routing/app_routers.dart';
 import 'package:fit_app/modules/auth/ui/screens/widgets/custom_elevated_button.dart';
 import 'package:fit_app/modules/auth/ui/screens/widgets/custom_text_field.dart';
 import 'package:fit_app/modules/auth/ui/screens/widgets/remember_me_and_forget_password_section.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class LoginForm extends StatelessWidget {
   const LoginForm({super.key});
@@ -19,7 +21,12 @@ class LoginForm extends StatelessWidget {
         SizedBox(height: 16),
         RememberMeAndForgetPasswordSection(),
         SizedBox(height: 24),
-        CustomElevatedButton(text: 'Log In', onPressed: () {}),
+        CustomElevatedButton(
+          text: 'Log In',
+          onPressed: () {
+            GoRouter.of(context).push(AppRouters.home);
+          },
+        ),
       ],
     );
   }
