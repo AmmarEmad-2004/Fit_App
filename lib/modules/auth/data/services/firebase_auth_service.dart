@@ -20,10 +20,11 @@ class FirebaseAuthService {
     required String email,
     required String password,
   }) async {
-    UserCredential user = await _firebaseAuth.createUserWithEmailAndPassword(
-      email: email,
-      password: password,
-    );
-    return UserModel.fromMap(user.user!);
+    UserCredential userCredential = await _firebaseAuth
+        .createUserWithEmailAndPassword(email: email, password: password);
+    await userCredential.user!.updateDisplayName(name);
+    await userCredential.user!.reload();
+    final updatedUser = _firebaseAuth.currentUser!;
+    return UserModel.fromMap(updatedUser);
   }
 }
