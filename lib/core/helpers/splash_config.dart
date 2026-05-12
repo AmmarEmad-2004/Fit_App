@@ -5,3 +5,4 @@ class SplashConfig {
   static const double startScale = 0.8;
   static const double endScale = 1.0;
 }
+
